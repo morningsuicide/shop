@@ -1,3 +1,8 @@
+# Yii2 console commands
+/yii
+/yii_test
+/yii_test.bat
+
 # Yii2 Runtime and Assets
 /backend/runtime/*
 /backend/web/assets/*
@@ -8,6 +13,14 @@
 !/frontend/runtime/.gitkeep
 !/console/runtime/.gitkeep
 
+# Yii2 generated files
+/frontend/web/index.php
+/frontend/web/index-test.php
+/frontend/web/robots.txt
+/backend/web/index.php
+/backend/web/index-test.php
+/backend/web/robots.txt
+
 # Composer
 /vendor/
 composer.phar
@@ -17,8 +30,12 @@ composer.phar
 .env.local
 
 # IDEs
-.vscode/
 .idea/
+.vscode/
+nbproject/
+.buildpath
+.project
+.settings/
 *.swp
 *.swo
 *~
@@ -36,6 +53,10 @@ Thumbs.db
 *.sqlite
 *.sqlite3
 
+# PHPUnit
+phpunit.phar
+/phpunit.xml
+
 # Node modules
 node_modules/
 npm-debug.log*
@@ -52,4 +73,7 @@ package-lock.json
 
 # Docker
 /docker/postgres/data/
+
+# Vagrant
+/.vagrant
 
