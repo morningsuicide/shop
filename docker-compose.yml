@@ -1,0 +1,88 @@
+version: '3.8'
+
+services:
+  nginx:
+    build:
+      context: ./docker/nginx
+      dockerfile: Dockerfile
+    container_name: shop_nginx
+    ports:
+      - "8080:80"      # Frontend
+      - "8081:81"      # Backend
+    volumes:
+      - ./:/var/www/html
+      - ./docker/nginx/frontend.conf:/etc/nginx/conf.d/frontend.conf
+      - ./docker/nginx/backend.conf:/etc/nginx/conf.d/backend.conf
+    depends_on:
+      - php-fpm
+    networks:
+      - shop_network
+
+  php-fpm:
+    build:
+      context: ./docker/php-fpm
+      dockerfile: Dockerfile
+    container_name: shop_php_fpm
+    volumes:
+      - ./:/var/www/html
+    environment:
+      PHP_IDE_CONFIG: "serverName=Docker"
+      XDEBUG_MODE: ${XDEBUG_MODE:-debug}
+      XDEBUG_CLIENT_HOST: ${XDEBUG_CLIENT_HOST:-host.docker.internal}
+      XDEBUG_CLIENT_PORT: ${XDEBUG_CLIENT_PORT:-9003}
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - shop_network
+
+  php-cli:
+    build:
+      context: ./docker/php-cli
+      dockerfile: Dockerfile
+    container_name: shop_php_cli
+    volumes:
+      - ./:/var/www/html
+    environment:
+      PHP_IDE_CONFIG: "serverName=Docker"
+      XDEBUG_MODE: ${XDEBUG_MODE:-off}
+      XDEBUG_CLIENT_HOST: ${XDEBUG_CLIENT_HOST:-host.docker.internal}
+      XDEBUG_CLIENT_PORT: ${XDEBUG_CLIENT_PORT:-9003}
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - shop_network
+    tty: true
+    stdin_open: true
+
+  postgres:
+    image: postgres:15-alpine
+    container_name: shop_postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: ${DB_DATABASE}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./docker/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - shop_network
+
+  redis:
+    image: redis:7-alpine
+    container_name: shop_redis
+    ports:
+      - "6379:6379"
+    networks:
+      - shop_network
+
+networks:
+  shop_network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+
