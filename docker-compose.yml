@@ -28,6 +28,8 @@ services:
       XDEBUG_MODE: ${XDEBUG_MODE:-debug}
       XDEBUG_CLIENT_HOST: ${XDEBUG_CLIENT_HOST:-host.docker.internal}
       XDEBUG_CLIENT_PORT: ${XDEBUG_CLIENT_PORT:-9003}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     depends_on:
       - postgres
       - redis
@@ -46,6 +48,8 @@ services:
       XDEBUG_MODE: ${XDEBUG_MODE:-off}
       XDEBUG_CLIENT_HOST: ${XDEBUG_CLIENT_HOST:-host.docker.internal}
       XDEBUG_CLIENT_PORT: ${XDEBUG_CLIENT_PORT:-9003}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     depends_on:
       - postgres
       - redis
