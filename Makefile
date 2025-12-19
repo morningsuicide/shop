@@ -15,49 +15,49 @@ help:
 	@echo "  make init        - Initialize Yii2 environments"
 
 up:
-	docker-compose up -d
+	docker compose up -d
 
 down:
-	docker-compose down
+	docker compose down
 
 restart:
-	docker-compose restart
+	docker compose restart
 
 build:
-	docker-compose up -d --build
+	docker compose up -d --build
 
 logs:
-	docker-compose logs -f
+	docker compose logs -f
 
 shell-fpm:
-	docker-compose exec php-fpm bash
+	docker compose exec php-fpm bash
 
 shell-cli:
-	docker-compose exec php-cli bash
+	docker compose exec php-cli bash
 
 composer:
-	docker-compose exec php-cli composer $(filter-out $@,$(MAKECMDGOALS))
+	docker compose exec php-cli composer $(filter-out $@,$(MAKECMDGOALS))
 
 migrate:
-	docker-compose exec php-cli php yii migrate
+	docker compose exec php-cli php yii migrate
 
 migrate-create:
-	docker-compose exec php-cli php yii migrate/create $(filter-out $@,$(MAKECMDGOALS))
+	docker compose exec php-cli php yii migrate/create $(filter-out $@,$(MAKECMDGOALS))
 
 install:
-	docker-compose exec php-cli composer create-project --prefer-dist yiisoft/yii2-app-advanced .
+	docker compose exec php-cli composer create-project --prefer-dist yiisoft/yii2-app-advanced .
 
 init:
-	docker-compose exec php-cli php init --env=Development --overwrite=All
+	docker compose exec php-cli php init --env=Development --overwrite=All
 
 rbac-init:
-	docker-compose exec php-cli php yii rbac/init
+	docker compose exec php-cli php yii rbac/init
 
 cache-flush:
-	docker-compose exec php-cli php yii cache/flush-all
+	docker compose exec php-cli php yii cache/flush-all
 
 postgres:
-	docker-compose exec postgres psql -U shop_user -d shop
+	docker compose exec postgres psql -U shop_user -d shop
 
 %:
 	@:
